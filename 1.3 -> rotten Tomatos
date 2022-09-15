@@ -1,0 +1,90 @@
+https://leetcode.com/problems/rotting-oranges/
+
+code:
+-----
+class Solution {
+public:
+    bool isVisited(int a,int b, int m, int n,vector<vector<int>>& grid){
+        if(a>=0 && a<n && b>=0 && b<m && grid[a][b] == 1){
+            return true;
+        }
+        else
+            return false;
+    }
+    int orangesRotting(vector<vector<int>>& grid) {
+        int n = grid.size();
+        int m = grid[0].size();
+        
+        //Step 1: jo rotten tomato hai uska index
+        queue mai push kr do and fresh count kr lo
+        
+        queue<pair<int,int>> q;
+        int fresh = 0,time = 0;
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                if(grid[i][j]==2){
+                    q.push(make_pair(i,j));
+                }
+                else if(grid[i][j]==1){
+                    fresh++;
+                }
+            }
+        }
+        
+        //step 2: check the conditions if no rotten tomatos are present
+        if(fresh == 0)
+            return 0;
+        
+        //step 3: using BFS
+        while(!q.empty()){
+            int q_size = q.size();
+            int rotting_tomatos=0;
+            while(q_size!=0){
+                pair<int,int> q_front = q.front();
+                q.pop();
+                
+                int x = q_front.first;
+                int y = q_front.second;
+                
+                int Xi[4] = {1,-1,0,0};
+                int Yi[4] = {0,0,1,-1};
+                
+                for(int i=0;i<4;i++){
+                    
+                    int a = Xi[i] + x;
+                    int b = Yi[i] + y;
+                    
+                    if(isVisited(a,b,m,n,grid)){
+                        q.push(make_pair(a,b));
+                        grid[a][b] = 2;
+                        rotting_tomatos++;
+                    }
+                }
+                
+                q_size--;
+            }
+            if(rotting_tomatos!=0){
+                time++;
+            }
+        }
+        
+        //step 4: check agr koi oranges bach gaya ho rotten hona
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                if(grid[i][j]==1){
+                    time = 0;
+                    break;
+                }
+            }
+        }
+        
+        //step 5: check kro agr time 0 hai tho -1 return kr
+        do agr time change nai hua hai tho same time return kr do
+        if(time != 0){
+            return time;
+        }
+        else
+            return -1;
+        
+    }
+};
