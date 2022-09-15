@@ -35,3 +35,64 @@ step 5: if false marked hai push kr do queue mai
         and true mark kr do
         
         
+code:
+-----
+#include <iostream>
+#include <list>
+#include <unordered_map>
+#include <queue>
+using namespace std;
+class graph{
+public:
+  unordered_map<int,list<int>>adjList;
+
+  void addGraph(int u,int v,bool direction){
+    adjList[u].push_back(v);
+    if(direction == 0){
+      adjList[v].push_back(u);
+    }
+  }
+
+  void printGraph(){
+    for(auto i:adjList){
+      cout << i.first <<"->";
+      for(auto j:i.second){
+        cout<< j <<",";
+      }
+      cout<<endl;
+    }
+  }
+
+  void BFS(int srcNode){
+    queue<int>q;
+    q.push(srcNode);
+
+    unordered_map<int,bool> visited;
+    visited[srcNode] = true;
+
+    while(!q.empty()){
+      int front = q.front();
+      q.pop();
+      cout<<front<<",";
+
+      for(auto neighbour: adjList[front]){
+        if(!visited[neighbour]){
+          q.push(neighbour);
+          visited[neighbour] = true;
+        }
+      }
+    }
+  }
+};
+
+int main(){
+  graph g;
+  
+  g.addGraph(0,1,0);
+  g.addGraph(1,2,0);
+  g.addGraph(2,3,0);
+  g.addGraph(2,4,0);
+  g.addGraph(3,4,0);
+  g.printGraph();
+  g.BFS(0);
+}
