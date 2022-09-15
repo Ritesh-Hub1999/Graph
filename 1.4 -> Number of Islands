@@ -1,0 +1,89 @@
+https://leetcode.com/problems/number-of-islands/
+
+Example 1:
+----------
+Input: grid = [
+  ["1","1","1","1","0"],
+  ["1","1","0","1","0"],
+  ["1","1","0","0","0"],
+  ["0","0","0","0","0"]
+]
+Output: 1
+
+Example 2:
+---------
+Input: grid = [
+  ["1","1","0","0","0"],
+  ["1","1","0","0","0"],
+  ["0","0","1","0","0"],
+  ["0","0","0","1","1"]
+]
+Output: 3
+
+1-> represent Island
+0-> represent Water
+
+Approch:
+-------
+-> We gonna use DFS qki it's easy
+  and hama traverse karta hua jana
+  hai.
+  
+-> so hum 4 direction mai move kar sakta hai.
+
+-> Jaisa 1 milega island ka count bardha
+   denga and DFS call kar denga
+  
+-> DFS function mai island ko 0 mark kr denga
+                  &&
+   and check karenga agala bagala ja sakta hai.
+   canVisit function bana ka
+   
+   code:
+   ----
+   
+   bool canVisit(int i,int j,int row,int col,vector<vector<char>>& grid){
+        if(i >= 0 && i < row && j >= 0 && j < col && grid[i][j] == '1'){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+    void DFS(int i,int j,int row,int col,vector<vector<char>>& grid){
+        
+        grid[i][j] = '0';
+        
+        if(canVisit(i+1,j,row,col,grid)){
+            DFS(i+1,j,row,col,grid);
+        }
+        
+        if(canVisit(i-1,j,row,col,grid)){
+            DFS(i-1,j,row,col,grid);
+        }
+        
+        if(canVisit(i,j+1,row,col,grid)){
+            DFS(i,j+1,row,col,grid);
+        }
+        
+        if(canVisit(i,j-1,row,col,grid)){
+            DFS(i,j-1,row,col,grid);
+        }
+    }
+    int numIslands(vector<vector<char>>& grid) {
+        int row = grid.size();
+        int col = grid[0].size();
+        int islandCount = 0;
+        
+        for(int i=0;i<row;i++){
+            for(int j=0;j<col;j++){
+                if(grid[i][j] == '1'){
+                    islandCount++;
+                    DFS(i,j,row,col,grid);
+                }
+            }
+        }
+        
+        return islandCount;
+    }
+   
