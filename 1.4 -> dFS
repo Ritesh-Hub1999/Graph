@@ -1,0 +1,94 @@
+
+     0          4
+      \        /| 
+       \      / |
+        \    /  |
+         \  /   |
+          2 ----3 ------1
+          
+          AdjList:-
+          --------
+          0 -> 2
+          1 -> 3
+          2 -> 0,4,3
+          3 -> 1,2,4
+          4 -> 2,3
+          
+          
+          dfs(0)
+           /
+        dfs(2)
+         /
+      dfs(3)
+       /    \
+     dfs(1)  dfs(4)
+     
+Approch:
+--------
+step 1-> call DFS 
+step 2-> jis node pe ho usko print kar do
+step 3-> and jis node pe tha us node ko 
+         true mark kr do
+step 4-> check kro neighbour us source node ka
+         and agr wo visited nai hai tho DFS call 
+         kar do.
+         
+code + disconnected graph
+-------------------------
+#include <iostream>
+#include <unordered_map>
+#include <list>
+using namespace std;
+
+class graph{
+public:
+  unordered_map<int,list<int>> adjList;
+  void addGraph(int u,int v,bool direction){
+    adjList[u].push_back(v);
+    if(direction == 0){
+      adjList[v].push_back(u);
+    }
+  }
+
+  void printGraph(){
+    for(auto i:adjList){
+      cout<<i.first<<"->";
+      for(auto j:i.second){
+        cout<< j <<",";
+      }
+      cout<<endl;
+    }
+  }
+
+  void DFS(int srcNode,unordered_map<int,bool> &visited){
+    cout<< srcNode << " ";
+
+    
+    
+    visited[srcNode] = true;
+
+    for(auto neighbour : adjList[srcNode]){
+      if(!visited[neighbour]){
+        DFS(neighbour,visited);
+      }
+    }
+  }
+};
+
+int main(){
+  graph g;
+  g.addGraph(0,1,0);
+  g.addGraph(2,4,0);
+  g.addGraph(2,3,0);
+  g.addGraph(3,1,0);
+  g.addGraph(5,6,0);
+  //g.printGraph();
+  unordered_map<int,bool> visited;
+  
+
+  for(int i=0;i<6;i++){
+    if(!visited[i]){
+      g.DFS(i,visited);
+    }
+  }
+}
