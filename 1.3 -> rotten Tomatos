@@ -1,90 +1,119 @@
 https://leetcode.com/problems/rotting-oranges/
 
+Example 1:
+----------
+Input: grid = [[2,1,1],[1,1,0],[0,1,1]]
+Output: 4
+
+Example 2:
+---------
+Input: grid = [[2,1,1],[0,1,1],[1,0,1]]
+Output: -1
+Explanation: The orange in the bottom left corner (row 2, column 0) is never rotten, because rotting only happens 4-directionally.
+
+Example 3:
+---------
+Input: grid = [[0,2]]
+Output: 0
+Explanation: Since there are already no fresh oranges at minute 0, the answer is just 0.
+
+Approch:
+-------
+ //step 1: pehla check koi fresh oranges tho nai agr nai hai tho 0 time lagenga sardana mai
+           //check agr ek bhi fresh nai hua tho hama 0 time lagega usa sardana mai
+           
+ //step 2: ab hum rotten oranges ka indexes dalenga queue mai 
+ 
+ //step 2.1: sardana chalu karta hai oranges ko
+ 
+ //step 3: check agar sara oranges sardana ka baad bhi ek fresh orange bach gaya tho return -1 karna hai
+ 
 code:
 -----
-class Solution {
-public:
-    bool isVisited(int a,int b, int m, int n,vector<vector<int>>& grid){
-        if(a>=0 && a<n && b>=0 && b<m && grid[a][b] == 1){
+bool checkAgaSardaSaktaHai(int x,int y,int n,int m,vector<vector<int>>& grid){
+        if(x >= 0 && x < n && y >= 0 && y < m && grid[x][y] == 1){
             return true;
         }
-        else
-            return false;
+
+        return false;
     }
     int orangesRotting(vector<vector<int>>& grid) {
+
         int n = grid.size();
         int m = grid[0].size();
-        
-        //Step 1: jo rotten tomato hai uska index
-        queue mai push kr do and fresh count kr lo
-        
+        int fresh = 0;
+        int time = 0;
         queue<pair<int,int>> q;
-        int fresh = 0,time = 0;
+        //step 1: pehla check koi fresh oranges tho nai agr nai hai tho 0 time lagenga sardana mai
         for(int i=0;i<n;i++){
             for(int j=0;j<m;j++){
-                if(grid[i][j]==2){
-                    q.push(make_pair(i,j));
-                }
-                else if(grid[i][j]==1){
+                if(grid[i][j] == 1){
                     fresh++;
                 }
             }
         }
-        
-        //step 2: check the conditions if no rotten tomatos are present
-        if(fresh == 0)
-            return 0;
-        
-        //step 3: using BFS
+
+        //check agr ek bhi fresh nai hua tho hama 0 time lagega usa sardana mai
+        if(fresh == 0){
+            return time;
+        }
+
+        //step 2: ab hum rotten oranges ka indexes dalenga queue mai 
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                if(grid[i][j] == 2){
+                    q.push({i,j});
+                }
+            }
+        }
+
+        //step 2.1: sardana chalu karta hai oranges ko
         while(!q.empty()){
             int q_size = q.size();
-            int rotting_tomatos=0;
-            while(q_size!=0){
-                pair<int,int> q_front = q.front();
+            int temp = 0;
+
+            while(q_size != 0){
+                pair<int,int> front = q.front();
                 q.pop();
-                
-                int x = q_front.first;
-                int y = q_front.second;
-                
-                int Xi[4] = {1,-1,0,0};
-                int Yi[4] = {0,0,1,-1};
-                
+
+                int x1 = front.first;
+                int y1 = front.second;
+
+                int x_axis[4] = {1,-1,0,0};
+                int y_axis[4] = {0,0,1,-1};
+
                 for(int i=0;i<4;i++){
-                    
-                    int a = Xi[i] + x;
-                    int b = Yi[i] + y;
-                    
-                    if(isVisited(a,b,m,n,grid)){
-                        q.push(make_pair(a,b));
-                        grid[a][b] = 2;
-                        rotting_tomatos++;
+                    int x = x_axis[i] + x1;
+                    int y = y_axis[i] + y1;
+
+                    if(checkAgaSardaSaktaHai(x,y,n,m,grid) == true){
+                        //temp ++ karo qki kuch sarda hai and agr jo fresh orange hai usa sara do
+                        temp++;
+                        grid[x][y] = 2;
+                        q.push({x,y});
                     }
                 }
-                
                 q_size--;
             }
-            if(rotting_tomatos!=0){
+
+            if(temp != 0){
                 time++;
             }
         }
-        
-        //step 4: check agr koi oranges bach gaya ho rotten hona
+
+
+        //step 3: check agar sara oranges sardana ka baad bhi ek fresh orange bach gaya tho return -1 karna hai
         for(int i=0;i<n;i++){
             for(int j=0;j<m;j++){
-                if(grid[i][j]==1){
+                if(grid[i][j] == 1){
                     time = 0;
-                    break;
                 }
             }
         }
-        
-        //step 5: check kro agr time 0 hai tho -1 return kr
-        do agr time change nai hua hai tho same time return kr do
-        if(time != 0){
-            return time;
-        }
-        else
+
+        if(time == 0){
             return -1;
+        }
+        return time;
         
     }
-};
