@@ -31,19 +31,94 @@ to the given target position or return -1 if its not possible.
 knightPos[] = {4, 5}  
 targetPos[] = {1, 1}
 
-Step 1: yaha hum 0 based indexing use karenga 
+Step 1: yaha hum 0 based indexing use karenga and steps count karenga
+        ki kitna steps lagega knight ko target taak phuchna mai
 
-                    |
-                    |
-                    |
-                    |
-                    |
-  ----------------------------------------
-                    |
-                    |
-                    |
-                    |
-                    |
+Step 2: check agr knight ka pos target ke hi position pe tho nai
+
+step 3: Initial step BFS ka
+        -> queue mai push kr do knight ka pos ko
+        -> visited ko true mark kr do
+        
+step 4: BFS ka steps follow karo and step ko aga bardhata jao
+
+step 5: knight 8 direction mai move kar sakta hai
+       int x_axis[8] = {1,1,-1,-1,2,-2,2,-2};
+	      int y_axis[8] = {2,-2,2,-2,1,1,-1,-1};
+       
+Code:
+-----
+bool CheckValidPosAndNotVisited(int x,int y,int n,vector<vector<bool>> &visited){
+        // yaha hum check kar rha hai jaha ja rha hai wo pehla sa visited bhi na ho
+        if(x >= 0 && x < n && y >= 0 && y < n && visited[x][y] == false){
+            return true;
+        }
+        
+        return false;
+    }
+    
+	int minStepToReachTarget(vector<int> &KnightPos,vector<int> &TargetPos,int n)
+	{
+	   // yaha hum 0 base indexing le rha hai
+	    int KnightPosX1 = KnightPos[0] - 1,KnightPosY1 = KnightPos[1] - 1;
+	    
+	    int Target1 = TargetPos[0] - 1,Target2 = TargetPos[1] - 1;
+	    
+	    int steps = 0;
+	       
+	   //step1 : pehla hi check karo ki jis position pe khara hai wahi target position tho nai
+	    if(KnightPosX1 == Target1 && KnightPosY1 ==Target2){
+	        return 0;
+	    }
+	    
+	    //create a visited array to check where we have visited or not
+	    vector<vector<bool>>visited(n,vector<bool>(n,false));
+	    
+	    //step2 : INITIAL STEPS
+	    //queue mai push kr do
+	    //and jaha visit kia ho usa true mark kr do
+	    queue<pair<int,int>> q;
+	    q.push({KnightPosX1,KnightPosY1});
+	    
+	    visited[KnightPosX1][KnightPosY1] = true;
+	    
+	    //BfS 
+	    while(!q.empty()){
+	        int q_size = q.size();
+	        steps++;
+	        
+	        while(q_size != 0){
+	            pair<int,int> front = q.front();
+	            q.pop();
+	            
+	            int x1 = front.first;
+	            int y1 = front.second;
+	            
+	            int x_axis[8] = {1,1,-1,-1,2,-2,2,-2};
+	            int y_axis[8] = {2,-2,2,-2,1,1,-1,-1};
+	            
+	            for(int i=0;i<8;i++){
+	                int x = x_axis[i] + x1;
+	                int y = y_axis[i] + y1;
+	                //jis new position pe ja rha hai wahi target ho
+	                if(x == Target1 && y == Target2){
+	                    return steps;
+	                }
+	                
+	                if(CheckValidPosAndNotVisited(x,y,n,visited)){
+	                    q.push({x,y});
+	                    visited[x][y] = true;
+	                }
+	            }
+	            
+	            
+	            q_size--;
+	        }
+	    }
+	    
+	    return steps;
+	}
+	            
 
                             
                             
