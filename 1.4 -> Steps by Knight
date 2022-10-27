@@ -1,0 +1,51 @@
+https://practice.geeksforgeeks.org/problems/steps-by-knight5927/1
+Example 1:
+
+Input:
+-----
+N=6
+knightPos[ ] = {4, 5}
+targetPos[ ] = {1, 1}
+
+Output:
+------
+3
+
+Explanation:
+------------
+Knight takes 3 step to reach from 
+(4, 5) to (1, 1):
+(4, 5) -> (5, 3) -> (3, 2) -> (1, 1).
+ 
+
+Your Task:
+----------
+You don't need to read input or print anything. Your task is to complete the function 
+minStepToReachTarget() which takes the initial position of Knight (KnightPos), the target 
+position of Knight (TargetPos), and the size of the chessboard (N) as input parameters and 
+returns the minimum number of steps required by the knight to reach from its current position
+to the given target position or return -1 if its not possible.
+
+ Approch:
+ --------
+knightPos[] = {4, 5}  
+targetPos[] = {1, 1}
+
+Step 1: yaha hum 0 based indexing use karenga 
+
+                    |
+                    |
+                    |
+                    |
+                    |
+  ----------------------------------------
+                    |
+                    |
+                    |
+                    |
+                    |
+
+                            
+                            
+                            
+                        
