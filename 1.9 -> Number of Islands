@@ -32,9 +32,14 @@ Approch:
    hai value ek baar us island pe gai tho.
    
 -> We gonna use DFS qki it's easy
-  and hama traverse karta hua jana
-  hai.
+    and hama traverse karta hua jana
+    hai.
   
+-> loop mai check karenga island jaisa island
+   mila DFS call kar denga and count bardha denga.
+   //jaisa 1 island milega count bardha denga 
+   //and island connect karenga
+
 -> so hum 4 direction mai move kar sakta hai.
 
 -> Jaisa 1 milega island ka count bardha
