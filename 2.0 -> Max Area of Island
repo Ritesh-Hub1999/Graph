@@ -1,0 +1,84 @@
+https://leetcode.com/problems/max-area-of-island/
+
+Input: grid = [[0,0,1,0,0,0,0,1,0,0,0,0,0],
+               [0,0,0,0,0,0,0,1,1,1,0,0,0],
+               [0,1,1,0,1,0,0,0,0,0,0,0,0],
+               [0,1,0,0,1,1,0,0,1,0,1,0,0],
+               [0,1,0,0,1,1,0,0,1,1,1,0,0],
+               [0,0,0,0,0,0,0,0,0,0,1,0,0],
+               [0,0,0,0,0,0,0,1,1,1,0,0,0],
+               [0,0,0,0,0,0,0,1,1,0,0,0,0]]
+               
+Output: 6
+Explanation: The answer is not 11, because the island must be connected 4-directionally.
+
+Example 2:
+--------
+Input: grid = [[0,0,0,0,0,0,0,0]]
+Output: 0
+
+Approch:
+------
+Yaha hama maximum area find krna hai 
+
+*** if(grid[i][j]==1){
+       int area=0;
+       dfs(i,j,m,n,grid,area);
+       maxArea = max(maxArea,area);
+      }
+     
+Yaha hum hama island mila tho har baar jaka grid mai area count karenga
+means area++ karenga 
+
+ans usa maxArea mai update krenga.
+
+Code:
+----
+bool checkAgaJaSaktaHai(int i,int j,int m,int n,vector<vector<int>>& grid){
+        
+        if(i>=0 and i<m and j>=0 and j<n and grid[i][j]==1){
+            return true;
+        }
+        
+        return false;
+    }
+    void dfs(int i,int j,int m,int n,vector<vector<int>>& grid,int &area){
+        
+        //yaha area ++ karenga
+        area++;
+        grid[i][j] = 0;
+        
+        if(checkAgaJaSaktaHai(i+1,j,m,n,grid)){
+            dfs(i+1,j,m,n,grid,area);
+        }
+        
+        if(checkAgaJaSaktaHai(i-1,j,m,n,grid)){
+            dfs(i-1,j,m,n,grid,area);
+        }
+        
+        if(checkAgaJaSaktaHai(i,j+1,m,n,grid)){
+            dfs(i,j+1,m,n,grid,area);
+        }
+        
+        if(checkAgaJaSaktaHai(i,j-1,m,n,grid)){
+            dfs(i,j-1,m,n,grid,area);
+        }
+    }
+    int maxAreaOfIsland(vector<vector<int>>& grid) {
+        int m = grid.size();
+        int n = grid[0].size();
+        
+        int maxArea = 0;
+        
+        for(int i = 0;i<m;i++){
+            for(int j = 0;j<n;j++){
+                if(grid[i][j]==1){
+                    int area=0;
+                    dfs(i,j,m,n,grid,area);
+                    maxArea = max(maxArea,area);
+                }
+            }
+        }
+
+        return maxArea;
+    }
