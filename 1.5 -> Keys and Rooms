@@ -1,0 +1,60 @@
+https://leetcode.com/problems/keys-and-rooms/description/
+
+Example 1:
+---------
+Input: rooms = [[1],[2],[3],[]]
+Output: true
+Explanation: 
+We visit room 0 and pick up key 1.
+We then visit room 1 and pick up key 2.
+We then visit room 2 and pick up key 3.
+We then visit room 3.
+Since we were able to visit every room, we return true.
+
+Example 2:
+----------
+Input: rooms = [[1,3],[3,0,1],[2],[0]]
+Output: false
+Explanation: We can not enter room number 2 since the only key that unlocks it is in that room.
+
+Approch:
+-------
+We have the key for 0th room we need to collect the keys from 0th room and so on.
+
+BFS use karenga
+---------------
+Step1 : Initial step -> queue mai push karenga jo open room hai pehla pht usko true mark karenga
+
+Step 2: jab tak queue empty nai hota hai bfs wala game khelenga
+
+Code:
+-----
+bool canVisitAllRooms(vector<vector<int>>& rooms) {
+        queue<int> q;
+        vector<bool> visited(rooms.size(),false);
+
+        //hamara pass 0 room ka key hai
+        //so queue mai pehla room ka key daal do
+        q.push(0);
+        visited[0] = true;
+
+        while(!q.empty()){
+            int room = q.front();
+            q.pop();
+
+            for(auto key: rooms[room]){
+                if(!visited[key]){
+                    q.push(key);
+                    visited[key] = true;
+                }
+            } 
+        }
+
+        for(auto x: visited){
+            if(x != true){
+                return false;
+            }
+        }
+
+        return true;
+    }
