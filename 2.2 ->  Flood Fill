@@ -1,0 +1,72 @@
+https://leetcode.com/problems/flood-fill/
+
+
+Example 1:
+-----------
+Input: image = [[1,1,1],[1,1,0],[1,0,1]], sr = 1, sc = 1, color = 2
+Output: [[2,2,2],[2,2,0],[2,0,1]]
+Explanation: From the center of the image with position (sr, sc) = (1, 1) (i.e., the red pixel), all pixels 
+connected by a path of the same color as the starting pixel (i.e., the blue pixels) are colored with the new color.
+Note the bottom corner is not colored 2, because it is not 4-directionally connected to the starting pixel.
+
+Example 2:
+----------
+Input: image = [[0,0,0],[0,0,0]], sr = 0, sc = 0, color = 0
+Output: [[0,0,0],[0,0,0]]
+Explanation: The starting pixel is already colored 0, so no changes are made to the image.
+
+
+Apprrch:
+------
+Sc : src col
+sr : src row
+
+So basically yaha hama indexes dia hua hai
+and waha sa hum dfs call kardenga.
+
+
+Code:
+-----
+bool checkGivenColorHaiAsPass(vector<vector<int>>& image, int i, int j,int m, int n,int givenColor){
+        if(i >= 0 and i < m and j >= 0 and j < n and image[i][j] == givenColor){
+            return true;
+        }
+
+        return false;
+    }
+
+    void dfs(vector<vector<int>>& image, int i, int j,int m, int n,int givenColor,int newColor){
+
+        //ab hama color change karna hai
+        image[i][j] = newColor;
+
+        if(checkGivenColorHaiAsPass(image,i+1,j,m,n,givenColor)){
+            dfs(image,i+1,j,m,n,givenColor,newColor);
+        }   
+
+        if(checkGivenColorHaiAsPass(image,i-1,j,m,n,givenColor)){
+            dfs(image,i-1,j,m,n,givenColor,newColor);
+        }  
+
+        if(checkGivenColorHaiAsPass(image,i,j+1,m,n,givenColor)){
+            dfs(image,i,j+1,m,n,givenColor,newColor);
+        }  
+
+        if(checkGivenColorHaiAsPass(image,i,j-1,m,n,givenColor)){
+            dfs(image,i,j-1,m,n,givenColor,newColor);
+        }  
+    }
+    vector<vector<int>> floodFill(vector<vector<int>>& image, int sr, int sc, int newColor) {
+        int m = image.size();
+        int n = image[0].size();
+
+        int givenColor = image[sr][sc];
+
+        if(givenColor == newColor){
+            return image;
+        }
+
+        dfs(image,sr,sc,m,n,givenColor,newColor);
+
+        return image;
+    }
