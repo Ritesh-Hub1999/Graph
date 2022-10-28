@@ -25,6 +25,12 @@ Output: 3
 
 Approch:
 -------
+*** we can use visited but here we are just marking island 0
+-> yaha hum visited use kar skta tha but hum visited use nai kar rha 
+   and jis iland pe ja rha hai usa 0 kr de rha hai.
+   basically, hama count cahiya island ka and hum isma change kr skta 
+   hai value ek baar us island pe gai tho.
+   
 -> We gonna use DFS qki it's easy
   and hama traverse karta hua jana
   hai.
@@ -42,48 +48,58 @@ Approch:
    code:
    ----
    
-   bool canVisit(int i,int j,int row,int col,vector<vector<char>>& grid){
-        if(i >= 0 && i < row && j >= 0 && j < col && grid[i][j] == '1'){
+    bool agaJaSaktaHai(int i,int j,int m,int n,vector<vector<char>>& grid){
+        if(i >= 0 and i < m and j >= 0 and j < n and grid[i][j] == '1'){
             return true;
         }
-        else{
-            return false;
-        }
+        return false;
     }
-    void DFS(int i,int j,int row,int col,vector<vector<char>>& grid){
+    
+    void dfs(int i,int j,int m,int n,vector<vector<char>>& grid){
         
+        //jis island pe ho usa mark kr do zero
         grid[i][j] = '0';
-        
-        if(canVisit(i+1,j,row,col,grid)){
-            DFS(i+1,j,row,col,grid);
+
+        if(agaJaSaktaHai(i+1,j,m,n,grid)){
+            dfs(i+1,j,m,n,grid);
         }
-        
-        if(canVisit(i-1,j,row,col,grid)){
-            DFS(i-1,j,row,col,grid);
+
+        if(agaJaSaktaHai(i-1,j,m,n,grid)){
+            dfs(i-1,j,m,n,grid);
         }
-        
-        if(canVisit(i,j+1,row,col,grid)){
-            DFS(i,j+1,row,col,grid);
+
+        if(agaJaSaktaHai(i,j+1,m,n,grid)){
+            dfs(i,j+1,m,n,grid);
         }
-        
-        if(canVisit(i,j-1,row,col,grid)){
-            DFS(i,j-1,row,col,grid);
+
+        if(agaJaSaktaHai(i,j-1,m,n,grid)){
+            dfs(i,j-1,m,n,grid);
         }
     }
+    
     int numIslands(vector<vector<char>>& grid) {
-        int row = grid.size();
-        int col = grid[0].size();
-        int islandCount = 0;
         
-        for(int i=0;i<row;i++){
-            for(int j=0;j<col;j++){
+        // yaha hum visited use kar skta tha but hum visited use nai kar rha 
+        // and jis iland pe ja rha hai usa 0 kr de rha hai.
+        // basically, hama count cahiya island ka and hum isma change kr skta 
+        // hai value ek baar us island pe gai tho.
+        int m = grid.size();
+        int n = grid[0].size();
+
+        int countIsland = 0;
+
+        for(int i=0;i<m;i++){
+            for(int j = 0;j<n;j++){
+                //jaisa 1 island milega count bardha denga 
+                //and island connect karenga
                 if(grid[i][j] == '1'){
-                    islandCount++;
-                    DFS(i,j,row,col,grid);
+                    countIsland++;
+                    dfs(i,j,m,n,grid);
                 }
             }
-        }
-        
-        return islandCount;
+        } 
+
+        return countIsland;
+
     }
    
