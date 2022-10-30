@@ -8,50 +8,58 @@ Step 2: no of island wala game khelenga
 code:
 -----
 bool checkAgaJaSaktaHai(int i,int j,int m,int n,vector<vector<int>>& grid){
-        
-        if(i>=0 and i<m and j>=0 and j<n and grid[i][j]==1){
+        if(i >= 0 and i < m and j >= 0 and j < n and grid[i][j]==0){
             return true;
         }
-        
+
         return false;
     }
-    void dfs(int i,int j,int m,int n,vector<vector<int>>& grid,int &area){
-        
-        //yaha area ++ karenga
-        area++;
-        grid[i][j] = 0;
-        
+    void dfs(int i,int j,int m,int n,vector<vector<int>>& grid){
+
+        grid[i][j] = 1;
+
         if(checkAgaJaSaktaHai(i+1,j,m,n,grid)){
-            dfs(i+1,j,m,n,grid,area);
+            dfs(i+1,j,m,n,grid);
         }
-        
+
         if(checkAgaJaSaktaHai(i-1,j,m,n,grid)){
-            dfs(i-1,j,m,n,grid,area);
+            dfs(i-1,j,m,n,grid);
         }
-        
+
         if(checkAgaJaSaktaHai(i,j+1,m,n,grid)){
-            dfs(i,j+1,m,n,grid,area);
+            dfs(i,j+1,m,n,grid);
         }
-        
+
         if(checkAgaJaSaktaHai(i,j-1,m,n,grid)){
-            dfs(i,j-1,m,n,grid,area);
+            dfs(i,j-1,m,n,grid);
         }
+
     }
-    int maxAreaOfIsland(vector<vector<int>>& grid) {
+    int closedIsland(vector<vector<int>>& grid) {
         int m = grid.size();
         int n = grid[0].size();
-        
-        int maxArea = 0;
-        
-        for(int i = 0;i<m;i++){
-            for(int j = 0;j<n;j++){
-                if(grid[i][j]==1){
-                    int area=0;
-                    dfs(i,j,m,n,grid,area);
-                    maxArea = max(maxArea,area);
+        int closedIsland = 0;
+
+        //Step 1: boundary mai jitna zeros hai unha 1 karenga qki hama closed island cahiya 
+        for(int i=0;i<m;i++){
+            for(int j=0;j<n;j++){
+                if(i*j == 0 or i == m-1 or j == n-1){
+                    if(grid[i][j] == 0){
+                        dfs(i,j,m,n,grid);
+                    }
                 }
             }
         }
 
-        return maxArea;
+        //step 2: no. of island wala game khelna hai
+        for(int i=0;i<m;i++){
+            for(int j=0;j<n;j++){
+                if(grid[i][j] == 0){
+                        closedIsland++;
+                        dfs(i,j,m,n,grid);
+                }
+            }
+        }
+
+        return closedIsland;
     }
