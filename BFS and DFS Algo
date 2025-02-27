@@ -1,0 +1,95 @@
+Algorithm (BFS)
+---------------
+1. Start at a node and mark it as visited.
+2. Use a queue to store nodes to be explored.
+3. While the queue is not empty:
+   Dequeue a node, process it.
+   Enqueue all unvisited neighbors
+   and mark them as visited.
+
+
+Code:
+----
+#include <iostream>
+#include <queue>
+#include <vector>
+
+using namespace std;
+
+void bfs(int start, vector<vector<int>>& graph, vector<bool>& visited) {
+    queue<int> q;
+    q.push(start);
+    visited[start] = true;
+
+    while (!q.empty()) {
+        int node = q.front();
+        q.pop();
+        cout << node << " ";
+
+        for (int neighbor : graph[node]) {
+            if (!visited[neighbor]) {
+                visited[neighbor] = true;
+                q.push(neighbor);
+            }
+        }
+    }
+}
+
+int main() {
+    int n = 5;  // Number of nodes
+    vector<vector<int>> graph = {
+        {},        // Node 0 (Unused)
+        {2, 3},    // Node 1 → 2, 3
+        {1, 4},    // Node 2 → 1, 4
+        {1, 5},    // Node 3 → 1, 5
+        {2},       // Node 4 → 2
+        {3}        // Node 5 → 3
+    };
+    
+    vector<bool> visited(n + 1, false);
+    bfs(1, graph, visited);
+    return 0;
+}
+
+
+DFS:
+------
+Start at a node, mark it as visited.
+Visit each unvisited neighbor recursively.
+Backtrack when no more neighbors exist.
+
+Code:
+----
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+void dfs(int node, vector<vector<int>>& graph, vector<bool>& visited) {
+    visited[node] = true;
+    cout << node << " ";
+
+    for (int neighbor : graph[node]) {
+        if (!visited[neighbor]) {
+            dfs(neighbor, graph, visited);
+        }
+    }
+}
+
+int main() {
+    int n = 5;
+    vector<vector<int>> graph = {
+        {},        // Node 0 (Unused)
+        {2, 3},    // Node 1 → 2, 3
+        {1, 4},    // Node 2 → 1, 4
+        {1, 5},    // Node 3 → 1, 5
+        {2},       // Node 4 → 2
+        {3}        // Node 5 → 3
+    };
+
+    vector<bool> visited(n + 1, false);
+    dfs(1, graph, visited);
+    return 0;
+}
+
+
